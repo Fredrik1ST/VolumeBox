@@ -8,8 +8,7 @@ import glob
 # Parameters
 # distortedImage is the image that will be undistorted (done on an image-by-image basis)
 calibrationImgPath = "img/calibration/side/*.jpg"
-distortedImage = "img/calibration/side/side (29).jpg"
-
+distortedImage = "img/testing/side.jpg"
 
 
 # Part 1: Mark the points on the checkerboard in each image
@@ -60,21 +59,21 @@ cv2.destroyAllWindows()
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
 # Take an image to compare before-and-after undistortion
-img = cv2.imread(distortedImage)
-h,  w = img.shape[:2]
+distImg = cv2.imread(distortedImage)
+h,  w = distImg.shape[:2]
 newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),1,(w,h))
 
 
 
 # Part 3: Undistortion
-dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
+undistImg = cv2.undistort(distImg, mtx, dist, None, newcameramtx)
 
 # crop the image
 x,y,w,h = roi
-dst = dst[y:y+h, x:x+w]
+dst = undistImg[y:y+h, x:x+w]
 #cv2.imwrite('calibresult.png',dst)
-cv2.imshow("Original image", img)
-cv2.imshow("After undistortion", dst)
+cv2.imshow("Original image", distImg)
+cv2.imshow("After undistortion", undistImg)
 cv2.waitKey()
 
 

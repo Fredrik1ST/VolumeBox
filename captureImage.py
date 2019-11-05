@@ -5,12 +5,12 @@ def change_res(width, height):
     cap.set(3, width)
     cap.set(4, height)
 
-imgOutputName = "side.jpg" # Name of image saved
+imgOutputName = "capture.jpg" # Name of image saved
 topCamera = 0; # ID of top camera
 sideCamera = 1; # ID of side camera
 
 # Set up camera object
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 change_res(960, 720)
 
 # Check success
