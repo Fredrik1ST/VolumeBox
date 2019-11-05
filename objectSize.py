@@ -11,12 +11,24 @@ import cv2
 def midpoint(ptA, ptB):
     return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
+inputImgPath = "img/testing/side.jpg"
+refObjectWidth = 10 # Width of reference object in millimeters
 
-# Construct the argument parse and parse the arguments
-# This is for allowing manual input of images by a user
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True,
-                help="path to the input image")
-ap.add_argument("-w", "--width", type=float, required=True,
-                help="width of the left-most object in the image (in inches)")
-args = vars(ap.parse_args())
+# PART 1 : Extracting objects from image #
+# Based on objects being some hue of red #
+
+# load the image, create a mask to filter out the ROI / objects
+img = cv2.imread(inputImgPath)
+hsvImg = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+# Work in progress: finding a proper color threshold
+lowerRed = np.array([0,0,0])
+upperRed = np.array([50,150,50])
+mask = cv2.inRange(hsvImg, lowerRed, upperRed)
+maskedImg = cv2.bitwise_and(img, img, mask=mask) # Runs the mask over
+
+#gray = cv2.cvtColor(hsvImg, cv2.COLOR_BGR2GRAY)
+blurred = cv2.GaussianBlur(hsvImg, (7, 7), 0)
+cv2.imshow("Input image", img)
+cv2.imshow("HSV", hsvImg)
+cv2.waitKey()
+cv2.destroyAllWindows()

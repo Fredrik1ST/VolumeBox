@@ -1,4 +1,6 @@
 # Example of camera calibration using chess board pattern
+# Based on code by Alexander Mordvintsev & Abid K.:
+# https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
 # Includes some nice (but ultimately unecessary) visual feedback while working
 
 import numpy as np
