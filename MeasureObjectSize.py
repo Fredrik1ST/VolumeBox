@@ -1,4 +1,4 @@
-# Heavily based on code by Adrian Rosebebrock:
+# Based on code by Adrian Rosebebrock:
 # https://www.pyimagesearch.com/2016/03/28/measuring-size-of-objects-in-an-image-with-opencv/
 
 # import the necessary packages
@@ -11,10 +11,14 @@ import imutils
 import cv2
 
 # Variables of interest
-cameraType = "top"
+cameraType = "side"
 refObjectWidth = 10 # Width of reference object in millimeters
 objArea = None;
 test = None; # Test variable to be thrown around
+
+# Function that returns midpoint between two points
+def midpoint(ptA, ptB):
+    return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
 if cameraType is "side":
     inputImgPath = "img/testing/side.jpg"
@@ -24,11 +28,6 @@ else:
     inputImgPath = "img/testing/top.jpg"
     orderingDirection = "right-to-left"
     cannyLowerBound = 30;
-
-
-# Function that returns midpoint between two points
-def midpoint(ptA, ptB):
-    return ((ptA[0] + ptB[0]) * 0.5, (ptA[1] + ptB[1]) * 0.5)
 
 # PART 1 : Extracting objects from image #
 
@@ -113,8 +112,6 @@ for c in cnts:
     # compute the size of the object
     dimA = dA / pixelsPerMetric # "width" (x-axis)
     dimB = dB / pixelsPerMetric # "height" (y-axis)
-    print("X-axis:" , dimA)
-    print("Y-axis:" , dimB)
 
     # draw the object sizes on the image
     cv2.putText(orig, "{:.1f}mm".format(dimA),
@@ -124,6 +121,17 @@ for c in cnts:
                 (int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
                 0.65, (255, 255, 255), 2)
 
+dimX = dimA
+dimY = dimB
+baseArea = 0
+if cameraType is "side":
+    print("Width:", dimX, "mm")
+    print("Height:", dimY, "mm")
+else:
+    print("Side X:", dimX, "mm")
+    print("Side Y:", dimY, "mm")
+    baseArea = dimX*dimY
+    print("Base area:", baseArea, "mm^2")
 
 # show the output image (and steps to get there)
 if test is not None:
