@@ -11,7 +11,7 @@ import imutils
 import cv2
 
 # Variables of interest
-cameraType = "side"
+cameraType = "top"
 refObjectWidth = 10 # Width of reference object in millimeters
 objArea = None;
 test = None; # Test variable to be thrown around

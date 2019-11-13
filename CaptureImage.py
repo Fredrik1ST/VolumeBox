@@ -1,6 +1,11 @@
 import cv2
 
 def captureImage(fromAngle):
+    """ Capture an image from either the side or top camera
+
+        fromAngle should be either "side" or "top", or else it'll try to capture an image from your webcam.
+    """
+
     if fromAngle is "side":
         imgOutputPath = "img/side.jpg"
         cameraID = 1;
@@ -10,6 +15,8 @@ def captureImage(fromAngle):
     else:
         imgOutputPath = "img/accidental.jpg"
         cameraID = 0;
+        raise ValueError("Invalid fromAngle parameter in captureImage. "
+                         "If possible, image is captured from integrated webcam instead.")
 
     # Function to change camera resolution
     def change_res(width, height):

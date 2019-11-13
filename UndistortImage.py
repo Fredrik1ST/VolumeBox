@@ -2,6 +2,7 @@
 # Based on code by Alexander Mordvintsev & Abid K.:
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_calib3d/py_calibration/py_calibration.html
 # Includes some nice (but ultimately unecessary) visual feedback while working
+# Currently quite inefficient
 
 import numpy as np
 import cv2
@@ -11,8 +12,10 @@ def undistortImage(distortedImgPath, fromAngle):
     # calibrationImgPath is
     if fromAngle is "side":
         calibrationImgPath = "img/calibration/side/*.jpg"
+        undistortedOutputPath = "img/undistortedSide.jpg"
     elif fromAngle is "top":
         calibrationImgPath = "img/calibration/top/*.jpg"
+        undistortedOutputPath = "img/undistortedTop.jpg"
     else:
         raise ValueError('The fromAngle parameter in cameraCalibration is wrong. You dingus.'
                          'Write either "top" or "side".')
@@ -60,8 +63,6 @@ def undistortImage(distortedImgPath, fromAngle):
     # Part 2: Calibrate camera
     # Based on the object and image points found above,
     # find the camera matrix, distortion coefficients, rotation and translation vectors etc.
-    # TODO: These values should be attained for each camera at the beginning of the main program.
-    #       That way, we can undistort images as they're taken. (It's done on an image-by-image basis)
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
     # Take an image to compare before-and-after undistortion
@@ -78,9 +79,11 @@ def undistortImage(distortedImgPath, fromAngle):
     x,y,w,h = roi
     dst = undistImg[y:y+h, x:x+w]
     #cv2.imwrite('calibresult.png',dst)
-    cv2.imshow("Original image", distImg)
-    cv2.imshow("After undistortion", undistImg)
+   # cv2.imshow("Original image", distImg)
+    cv2.imshow("After undistortion", dst)
+    cv2.imwrite(undistortedOutputPath, dst)
     cv2.waitKey()
+    cv2.destroyAllWindows()
 
 
     # Part 4 (optional): Testing re-projection error
