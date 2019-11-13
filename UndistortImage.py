@@ -9,7 +9,12 @@ import cv2
 import glob
 
 def undistortImage(distortedImgPath, fromAngle):
-    # calibrationImgPath is
+    """ Calibrate camera based on checkerboard pattern and undistort a given image
+    :param distortedImgPath: the path of the image to undistort
+    :param fromAngle: the angle the image was captured from. Determines which camera is calibrated
+    :return: average reprojection error. The closer to zero the more accurate the image
+    """
+
     if fromAngle is "side":
         calibrationImgPath = "img/calibration/side/*.jpg"
         undistortedOutputPath = "img/undistortedSide.jpg"
@@ -17,7 +22,7 @@ def undistortImage(distortedImgPath, fromAngle):
         calibrationImgPath = "img/calibration/top/*.jpg"
         undistortedOutputPath = "img/undistortedTop.jpg"
     else:
-        raise ValueError('The fromAngle parameter in cameraCalibration is wrong. You dingus.'
+        raise ValueError('The fromAngle parameter in cameraCalibration is wrong.'
                          'Write either "top" or "side".')
 
 
@@ -95,4 +100,4 @@ def undistortImage(distortedImgPath, fromAngle):
         error = cv2.norm(imgpoints[i],imgpoints2, cv2.NORM_L2)/len(imgpoints2)
         mean_error += error
 
-    print("Total error: ", mean_error/len(objpoints))
+    print(fromAngle, "reprojection error: ", mean_error/len(objpoints))

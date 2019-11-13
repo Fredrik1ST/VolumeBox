@@ -1,9 +1,9 @@
 import cv2
 
 def captureImage(fromAngle):
-    """ Capture an image from either the side or top camera
-
-        fromAngle should be either "side" or "top", or else it'll try to capture an image from your webcam.
+    """ Capture an image from either the side or top of the box
+    :param fromAngle: The angle from which the image is captured, "side" or "top"
+    :return: True if the image is successfully captured
     """
 
     if fromAngle is "side":
@@ -31,7 +31,7 @@ def captureImage(fromAngle):
     if not cap.isOpened():
         raise Exception("Could not open video device")
     # Read picture. ret === True on success
-    ret, frame = cap.read()
+    wasCaptureSuccessful, frame = cap.read()
     cv2.imwrite(imgOutputPath, frame)
 
     cv2.imshow("Captured image", frame)
@@ -39,3 +39,4 @@ def captureImage(fromAngle):
     cv2.destroyAllWindows()
     # Close device
     cap.release()
+    return wasCaptureSuccessful
