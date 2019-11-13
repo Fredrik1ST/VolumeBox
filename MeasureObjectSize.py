@@ -134,9 +134,7 @@ else:
     print("Base area:", baseArea, "mm^2")
 
 # show the output image (and steps to get there)
-if test is not None:
-    cv2.imshow("Test", test)
-cv2.imshow("Input", img)
+# cv2.imshow("Input", img)
 cv2.imshow("Grayscale + blurred", gray)
 cv2.imshow("Canny edge detected", edged)
 
